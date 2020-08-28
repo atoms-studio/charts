@@ -29,6 +29,12 @@ export default class PieChart extends AggregationChart {
 
 		args.tooltipOptions = args.tooltipOptions || {};
 		this.config.formatTooltip = args.tooltipOptions.formatTooltip;
+		if(args.tooltipOptions.hoverChanges !== undefined){
+			this.config.hoverChanges = args.tooltipOptions.hoverChanges;
+		}
+		else{
+			this.config.hoverChanges = true;
+		}
 	}
 
 	calc() {
@@ -114,8 +120,10 @@ export default class PieChart extends AggregationChart {
 		if(!path) return;
 		const color = this.colors[i];
 		if(flag) {
-			transform(path, this.calTranslateByAngle(this.state.slicesProperties[i]));
-			path.style.fill = lightenDarkenColor(color, 50);
+			if(this.config.hoverChanges){
+				transform(path, this.calTranslateByAngle(this.state.slicesProperties[i]));
+				path.style.stroke = lightenDarkenColor(color, 50);
+			}
 			let g_off = getOffset(this.svg);
 			let x = e.pageX - g_off.left + 10;
 			let y = e.pageY - g_off.top - 10;
