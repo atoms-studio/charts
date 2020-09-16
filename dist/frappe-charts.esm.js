@@ -306,6 +306,10 @@ class SvgTip {
 	}
 }
 
+/**
+ * Returns the value of a number upto 2 decimal places.
+ * @param {Number} d Any number
+ */
 function floatTwo(d) {
 	return parseFloat(d.toFixed(2));
 }
@@ -552,7 +556,9 @@ function createSVG(tag, o) {
 			}
 		} else {
 			if(i === "className") { i = "class"; }
-			if(i === "innerHTML") {
+			if(i === "innerHTMLlabel") {
+				element['innerHTML'] = val;
+			} else if(i === "innerHTML") {
 				element['textContent'] = val;
 			} else {
 				element.setAttribute(i, val);
@@ -816,7 +822,7 @@ function makeVertLine(x, label, y1, y2, options={}) {
 		dy: FONT_SIZE + 'px',
 		'font-size': FONT_SIZE + 'px',
 		'text-anchor': 'middle',
-		innerHTML: label + ""
+		innerHTMLlabel: label
 	});
 
 	let line = createSVG('g', {
@@ -3282,7 +3288,11 @@ function getShortenedLabels(chartWidth, labels=[], isSeries=true) {
 
 			if(!isSeries) {
 				if(allowedLetters-3 > 0) {
-					label = label.slice(0, allowedLetters-3) + " ...";
+					const spans = label.split(" ");
+					label = '';
+					for(let indexWord = 0; indexWord < spans.length; indexWord++){
+						label += '<tspan x="0" dy="1.2em">'+ spans[indexWord] + '</tspan>';
+					}
 				} else {
 					label = label.slice(0, allowedLetters) + '..';
 				}
@@ -3898,7 +3908,7 @@ class DonutChart extends AggregationChart {
 
 		this.clockWise = args.clockWise || false;
 		this.strokeWidth = args.strokeWidth || 30;
-
+		
 		args.tooltipOptions = args.tooltipOptions || {};
 		this.config.formatTooltip = args.tooltipOptions.formatTooltip;
 		if(args.tooltipOptions.hoverChanges !== undefined){
@@ -4046,6 +4056,7 @@ class DonutChart extends AggregationChart {
 	}
 }
 
+// import MultiAxisChart from './charts/MultiAxisChart';
 const chartTypes = {
 	bar: AxisChart,
 	line: AxisChart,

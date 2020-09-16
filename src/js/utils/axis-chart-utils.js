@@ -114,7 +114,11 @@ export function getShortenedLabels(chartWidth, labels=[], isSeries=true) {
 
 			if(!isSeries) {
 				if(allowedLetters-3 > 0) {
-					label = label.slice(0, allowedLetters-3) + " ...";
+					const spans = label.split(" ");
+					label = '';
+					for(let indexWord = 0; indexWord < spans.length; indexWord++){
+						label += '<tspan x="0" dy="1.2em">'+ spans[indexWord] + '</tspan>';
+					}
 				} else {
 					label = label.slice(0, allowedLetters) + '..';
 				}

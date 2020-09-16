@@ -36,7 +36,9 @@ export function createSVG(tag, o) {
 			}
 		} else {
 			if(i === "className") { i = "class"; }
-			if(i === "innerHTML") {
+			if(i === "innerHTMLlabel") {
+				element['innerHTML'] = val;
+			} else if(i === "innerHTML") {
 				element['textContent'] = val;
 			} else {
 				element.setAttribute(i, val);
@@ -306,7 +308,7 @@ function makeVertLine(x, label, y1, y2, options={}) {
 		dy: FONT_SIZE + 'px',
 		'font-size': FONT_SIZE + 'px',
 		'text-anchor': 'middle',
-		innerHTML: label + ""
+		innerHTMLlabel: label
 	});
 
 	let line = createSVG('g', {
